@@ -75,7 +75,8 @@ class UserPage extends Component {
       preview: null,
       currentPassword: '',
       newPassword: '',
-      newPasswordConfirmation: ''
+      newPasswordConfirmation: '',
+      loading: false
     })
     if (this.state.hostProfile.length === 1) {
       this.hostProfileElement.current.closeAllForms()
@@ -315,15 +316,23 @@ class UserPage extends Component {
     if (elem.target.files[0].size > 5242880) {
       this.setState({
         errorDisplay: true,
-        errors: ['File cannot be over 5 MB!']
+        errors: ['File cannot be over 5 MB!'],
+        loading: true
       })
       elem.target.value = ''
     } else if (elem.target.files[0].type !== 'image/png' && elem.target.files[0].type !== 'image/jpeg' && elem.target.files[0].type !== 'image/jpg') {
       this.setState({
         errorDisplay: true,
-        errors: ['Unsupported image file format']
+        errors: ['Unsupported image file format'],
+        loading: true
       })
       elem.target.value = ''
+    } else {
+      this.setState({
+        loading: false,
+        errorDisplay: false,
+        errors: []
+      })
     }
   }
 
@@ -370,6 +379,7 @@ class UserPage extends Component {
 
     let avatar
     let avatarSubmitButton
+    let avatarRotateButton
     let noAvatar
 
     if (this.state.errorDisplay) {
@@ -395,6 +405,9 @@ class UserPage extends Component {
       avatarSubmitButton = (
         <Button id='avatar-submit-button' className='submit-button' loading>Save</Button>
       )
+      avatarRotateButton = (
+        <Button onClick={this.rotate.bind(this)} className='submit-button' loading>Rotate</Button>
+      )
     } else {
       locationSubmitButton = (
         <Button id='location-submit-button' className='submit-button' onClick={this.updateLocation}>Change</Button>
@@ -404,6 +417,9 @@ class UserPage extends Component {
       )
       avatarSubmitButton = (
         <Button id='avatar-submit-button' className='submit-button' onClick={this.updateAvatar}>Save</Button>
+      )
+      avatarRotateButton = (
+        <Button onClick={this.rotate.bind(this)} className='submit-button'>Rotate</Button>
       )
     }
 
@@ -453,7 +469,7 @@ class UserPage extends Component {
 
               {errorDisplay}
               <div style={{ 'marginBottom': '1rem' }}>
-                <Button onClick={this.rotate.bind(this)}>ROTATE90</Button>
+                {avatarRotateButton}
                 {avatarSubmitButton}
               </div>
             </div>
