@@ -406,7 +406,7 @@ class UserPage extends Component {
         <Button id='avatar-submit-button' className='submit-button' loading>Save</Button>
       )
       avatarRotateButton = (
-        <Button onClick={this.rotate.bind(this)} className='submit-button' loading>Rotate</Button>
+        <Button className='submit-button' loading>Rotate</Button>
       )
     } else {
       locationSubmitButton = (
@@ -419,7 +419,7 @@ class UserPage extends Component {
         <Button id='avatar-submit-button' className='submit-button' onClick={this.updateAvatar}>Save</Button>
       )
       avatarRotateButton = (
-        <Button onClick={this.rotate.bind(this)} className='submit-button'>Rotate</Button>
+        <Button className='submit-button' onClick={this.rotate.bind(this)}>Rotate</Button>
       )
     }
 
@@ -465,7 +465,7 @@ class UserPage extends Component {
                   </div>
                 }
               />
-              <img src={this.state.preview} alt="Preview" />
+              <Image src={this.state.preview} alt='Preview' size='tiny'/>
 
               {errorDisplay}
               <div style={{ 'marginBottom': '1rem' }}>
