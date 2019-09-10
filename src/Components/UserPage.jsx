@@ -7,6 +7,7 @@ import { LOCATION_OPTIONS } from '../Modules/locationData'
 import axios from 'axios'
 import Avatar from 'react-avatar-edit'
 import Popup from 'reactjs-popup'
+import Resizer from 'react-image-file-resizer'
 
 class UserPage extends Component {
 
@@ -312,9 +313,46 @@ class UserPage extends Component {
 
   onBeforeAvatarLoad = (elem) => {
     if (elem.target.files[0].size > 5242880) {
-      alert('File is too big!')
+      this.setState({
+        errorDisplay: true,
+        errors: ['File cannot be over 5 MB!']
+      })
+      elem.target.value = ''
+    } else if (elem.target.files[0].type !== 'image/png' && elem.target.files[0].type !== 'image/jpeg' && elem.target.files[0].type !== 'image/jpg') {
+      this.setState({
+        errorDisplay: true,
+        errors: ['Unsupported image file format']
+      })
       elem.target.value = ''
     }
+  }
+
+  dataURItoBlob = (dataURI) => {
+    let binary = atob(dataURI.split(',')[1])
+    let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+    let array = []
+    for (var i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i))
+    }
+    return new Blob([new Uint8Array(array)], { type: mimeString })
+  }
+
+  rotate = () => {
+    let file = this.dataURItoBlob(this.state.preview)
+    Resizer.imageFileResizer(
+      file,
+      10000,
+      10000,
+      'PNG',
+      100,
+      90,
+      uri => {
+        this.setState({
+          preview: uri
+        })
+      },
+      'base64'
+    )
   }
 
 
@@ -411,8 +449,11 @@ class UserPage extends Component {
                   </div>
                 }
               />
+              <img src={this.state.preview} alt="Preview" />
+
               {errorDisplay}
               <div style={{ 'marginBottom': '1rem' }}>
+                <Button onClick={this.rotate.bind(this)}>ROTATE90</Button>
                 {avatarSubmitButton}
               </div>
             </div>
