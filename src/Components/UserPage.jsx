@@ -418,9 +418,15 @@ class UserPage extends Component {
       avatarSubmitButton = (
         <Button id='avatar-submit-button' className='submit-button' onClick={this.updateAvatar}>Save</Button>
       )
-      avatarRotateButton = (
-        <Button className='submit-button' onClick={this.rotate.bind(this)}>Rotate</Button>
-      )
+      if (this.state.preview === null) {
+        avatarRotateButton = (
+          <Button className='submit-button' disabled>Rotate</Button>
+        )
+      } else {
+        avatarRotateButton = (
+          <Button className='submit-button' onClick={this.rotate.bind(this)} >Rotate</Button>
+        )
+      }
     }
 
     noAvatar = `https://ui-avatars.com/api/?name=${this.props.username}&size=150&length=3&font-size=0.3&rounded=true&background=d8d8d8&color=c90c61&uppercase=false`
