@@ -496,7 +496,7 @@ class HostProfile extends Component {
           this.setState({
             loading: false,
             errorDisplay: false,
-            availability: this.state.newAvailability,
+            availability: filteredAvailability,
             editableCalendar: false
           })
           window.alert('Your availability was succesfully updated!')

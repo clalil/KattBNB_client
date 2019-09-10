@@ -465,7 +465,7 @@ class UserPage extends Component {
                   </div>
                 }
               />
-              <Image src={this.state.preview} alt='Preview' size='tiny'/>
+              <Image src={this.state.preview} alt='Preview' size='tiny' />
 
               {errorDisplay}
               <div style={{ 'marginBottom': '1rem' }}>
