@@ -458,7 +458,7 @@ class UserPage extends Component {
         <div style={{ 'marginBottom': '1rem' }}>
           <Avatar
             width={260}
-            height={300}
+            height={260}
             imageWidth={260}
             onCrop={this.onAvatarCrop}
             onClose={this.onAvatarClose}
