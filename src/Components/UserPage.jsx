@@ -27,7 +27,8 @@ class UserPage extends Component {
     errors: '',
     hostProfile: '',
     hostProfileForm: false,
-    preview: null
+    preview: null,
+    rotateAvatar: false
   }
 
   async componentDidMount() {
@@ -380,7 +381,9 @@ class UserPage extends Component {
     let avatar
     let avatarSubmitButton
     let avatarRotateButton
+    let triggerRotateButton
     let noAvatar
+    let avatarPopup
 
     if (this.state.errorDisplay) {
       errorDisplay = (
@@ -420,13 +423,68 @@ class UserPage extends Component {
       )
       if (this.state.preview === null) {
         avatarRotateButton = (
-          <Button className='submit-button' disabled>Rotate</Button>
+          <Button className='submit-button' disabled><Icon name='redo alternate' style={{'margin': 'auto'}}/></Button>
         )
       } else {
         avatarRotateButton = (
-          <Button className='submit-button' onClick={this.rotate.bind(this)} >Rotate</Button>
+          <Button className='submit-button' onClick={this.rotate.bind(this)}><Icon name='redo alternate' style={{'margin': 'auto'}}/></Button>
         )
       }
+    }
+
+    if (this.state.preview) {
+      triggerRotateButton = (
+        <Button onClick={() => this.setState({rotateAvatar: true})} className='submit-button'>Rotate</Button>
+      )
+    } else {
+      triggerRotateButton = (
+        <Button disabled className='submit-button'>Rotate</Button>
+      )
+    }
+
+    if (this.state.rotateAvatar === true && this.state.preview !== null) {
+      avatarPopup=(
+        <div style={{ 'marginTop': '1rem', 'marginBottom': '1rem' }}>
+          <Image src={this.state.preview} alt='Preview' style={{'height': '240px', 'margin': 'auto'}} />
+          <div className='button-wrapper'>
+              {avatarRotateButton}
+              {avatarSubmitButton}
+          </div>
+        </div>
+      )
+
+    } else {
+      avatarPopup = (
+        <div style={{ 'marginBottom': '1rem' }}>
+          <Avatar
+            width={260}
+            height={300}
+            imageWidth={260}
+            onCrop={this.onAvatarCrop}
+            onClose={this.onAvatarClose}
+            onBeforeFileLoad={this.onBeforeAvatarLoad}
+            cropRadius={130}
+            label={
+              <div style={{ 'display': 'flex', 'marginTop': '8rem' }}>
+                <Icon.Group>
+                  <Icon name='photo' size='huge' style={{ 'color': '#d8d8d8' }} />
+                  <Icon
+                    corner='bottom right'
+                    name='add'
+                    circular
+                    style={{ 'backgroundColor': '#c90c61', 'textShadow': 'none', 'color': '#ffffff' }}
+                  />
+                </Icon.Group>
+              </div>
+            } 
+          />
+          {errorDisplay}
+          <div className='button-wrapper'>
+            {triggerRotateButton}
+            {avatarSubmitButton}
+          </div>
+        </div>
+      )
     }
 
     noAvatar = `https://ui-avatars.com/api/?name=${this.props.username}&size=150&length=3&font-size=0.3&rounded=true&background=d8d8d8&color=c90c61&uppercase=false`
@@ -448,38 +506,7 @@ class UserPage extends Component {
             }
             position='top center'
             closeOnDocumentClick={true}
-          >
-            <div style={{ 'margin': 'auto' }}>
-              <Avatar
-                width={260}
-                height={300}
-                imageWidth={260}
-                onCrop={this.onAvatarCrop}
-                onClose={this.onAvatarClose}
-                onBeforeFileLoad={this.onBeforeAvatarLoad}
-                label={
-                  <div style={{ 'display': 'flex', 'marginTop': '8rem' }}>
-                    <Icon.Group>
-                      <Icon name='photo' size='huge' style={{ 'color': '#d8d8d8' }} />
-                      <Icon
-                        corner='bottom right'
-                        name='add'
-                        circular
-                        style={{ 'backgroundColor': '#c90c61', 'textShadow': 'none', 'color': '#ffffff' }}
-                      />
-                    </Icon.Group>
-                  </div>
-                }
-              />
-              <Image src={this.state.preview} alt='Preview' size='tiny' />
-
-              {errorDisplay}
-              <div style={{ 'marginBottom': '1rem' }}>
-                {avatarRotateButton}
-                {avatarSubmitButton}
-              </div>
-            </div>
-
+          > {avatarPopup}
           </Popup>
         </Icon.Group>
       </div>
