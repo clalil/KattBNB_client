@@ -74,6 +74,7 @@ class UserPage extends Component {
       errorDisplay: false,
       errors: '',
       preview: null,
+      rotateAvatar: false,
       currentPassword: '',
       newPassword: '',
       newPasswordConfirmation: '',
@@ -324,7 +325,7 @@ class UserPage extends Component {
     } else if (elem.target.files[0].type !== 'image/png' && elem.target.files[0].type !== 'image/jpeg' && elem.target.files[0].type !== 'image/jpg') {
       this.setState({
         errorDisplay: true,
-        errors: ['Unsupported image file format'],
+        errors: ['Unsupported image file format!'],
         loading: true
       })
       elem.target.value = ''
@@ -423,18 +424,18 @@ class UserPage extends Component {
       )
       if (this.state.preview === null) {
         avatarRotateButton = (
-          <Button className='submit-button' disabled><Icon name='redo alternate' style={{'margin': 'auto'}}/></Button>
+          <Button className='submit-button' disabled><Icon name='redo alternate' style={{ 'margin': 'auto' }} /></Button>
         )
       } else {
         avatarRotateButton = (
-          <Button className='submit-button' onClick={this.rotate.bind(this)}><Icon name='redo alternate' style={{'margin': 'auto'}}/></Button>
+          <Button className='submit-button' onClick={this.rotate.bind(this)}><Icon name='redo alternate' style={{ 'margin': 'auto' }} /></Button>
         )
       }
     }
 
     if (this.state.preview) {
       triggerRotateButton = (
-        <Button onClick={() => this.setState({rotateAvatar: true})} className='submit-button'>Rotate</Button>
+        <Button onClick={() => this.setState({ rotateAvatar: true })} className='submit-button'>Rotate</Button>
       )
     } else {
       triggerRotateButton = (
@@ -443,16 +444,15 @@ class UserPage extends Component {
     }
 
     if (this.state.rotateAvatar === true && this.state.preview !== null) {
-      avatarPopup=(
+      avatarPopup = (
         <div style={{ 'marginTop': '1rem', 'marginBottom': '1rem' }}>
-          <Image src={this.state.preview} alt='Preview' style={{'height': '240px', 'margin': 'auto'}} />
+          <Image src={this.state.preview} alt='Preview' style={{ 'height': '240px', 'margin': 'auto' }} />
           <div className='button-wrapper'>
-              {avatarRotateButton}
-              {avatarSubmitButton}
+            {avatarRotateButton}
+            {avatarSubmitButton}
           </div>
         </div>
       )
-
     } else {
       avatarPopup = (
         <div style={{ 'marginBottom': '1rem' }}>
@@ -476,7 +476,7 @@ class UserPage extends Component {
                   />
                 </Icon.Group>
               </div>
-            } 
+            }
           />
           {errorDisplay}
           <div className='button-wrapper'>
@@ -506,7 +506,8 @@ class UserPage extends Component {
             }
             position='top center'
             closeOnDocumentClick={true}
-          > {avatarPopup}
+          >
+            {avatarPopup}
           </Popup>
         </Icon.Group>
       </div>
